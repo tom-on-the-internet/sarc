@@ -26,6 +26,7 @@ func ArgsToString(args []string) string {
 
 func ToSarcastic(text string) string {
 	var output []rune
+
 	shouldUpperCase := true
 
 	for _, character := range text {
