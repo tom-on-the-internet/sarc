@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strings"
+
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 // nolint
-var modes = map[string]func(string) string{
+var formats = map[string]func(string) string{
 	"lowercase": Lowercase,
 	"nomodify":  NoModify,
 	"reverse":   Reverse,
@@ -18,47 +21,69 @@ var modes = map[string]func(string) string{
 	"uppercase": Uppercase,
 }
 
+type options struct {
+	interactive bool
+	format      string
+}
+
 func main() {
-	mode := getMode()
+	options := getOptions()
 	input := getInput()
-	output := getOutput(mode, input)
+
+	if options.interactive {
+		p := tea.NewProgram(initialModel(options.format, input))
+		if err := p.Start(); err != nil {
+			fmt.Printf("Alas, there's been an error: %v", err)
+			os.Exit(1)
+		}
+	}
+
+	output := getOutput(options.format, input)
 
 	fmt.Println(output)
 }
 
-func getMode() string {
+func getOptions() options {
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "USAGE %s [-m mode] input\n\n", os.Args[0])
-		fmt.Fprintf(os.Stderr, "EXAMPLE %s -m sarcastic 'You are so smart.'\n\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "USAGE %s [options] input\n\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "EXAMPLE %s -f sarcastic 'You are so smart.'\n\n", os.Args[0])
 
-		fmt.Fprint(os.Stderr, "MODES\n\n")
+		fmt.Fprint(os.Stderr, "OPTIONS\n\n")
 
-		for mode := range modes {
-			fmt.Fprintf(os.Stderr, "%s\n", mode)
+		fmt.Fprint(os.Stderr, "-f, --format         format style\n")
+		fmt.Fprint(os.Stderr, "-i, --interactive    interactive mode\n")
+		fmt.Fprint(os.Stderr, "\n")
+
+		fmt.Fprint(os.Stderr, "FORMATS\n\n")
+
+		for format := range formats {
+			fmt.Fprintf(os.Stderr, "%s\n", format)
 		}
 	}
 
-	mode := ""
+	format := ""
 
-	flag.StringVar(&mode, "mode", "", "")
-	flag.StringVar(&mode, "m", "", "")
+	flag.StringVar(&format, "format", "", "")
+	flag.StringVar(&format, "f", "", "")
+
+	interactive := flag.Bool("i", false, "Interactive")
 
 	flag.Parse()
 
-	mode = strings.TrimSpace(mode)
+	format = strings.TrimSpace(format)
 
-	// default mode
-	if mode == "" {
-		mode = "sarcastic"
+	// default format
+	if format == "" {
+		format = "sarcastic"
 	}
 
-	if _, ok := modes[mode]; !ok {
-		fmt.Fprintf(os.Stderr, "invalid mode: %s\n\n", mode)
+	if _, ok := formats[format]; !ok {
+		fmt.Fprintf(os.Stderr, "invalid format: %s\n\n", format)
 		flag.Usage()
 		os.Exit(1)
 	}
 
-	return mode
+	return options{format: format, interactive: *interactive}
 }
 
 func getInput() string {
@@ -77,7 +102,18 @@ func getInput() string {
 	return string(bytes)
 }
 
-func getOutput(mode, input string) string {
-	fn := modes[mode]
+func getOutput(format, input string) string {
+	fn := formats[format]
 	return fn(input)
+}
+
+func getFormats() []string {
+	keys := make([]string, 0, len(formats))
+	for k := range formats {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+
+	return keys
 }
