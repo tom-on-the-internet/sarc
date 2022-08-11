@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type model struct {
@@ -14,6 +15,7 @@ type model struct {
 
 func initialModel(format, text string) model {
 	cursor := 0
+
 	for i, f := range getFormats() {
 		if format == f {
 			cursor = i
@@ -30,59 +32,42 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-
-		// Cool, what was the actual key pressed?
 		switch msg.String() {
-
-		// These keys should exit the program.
-		case "ctrl+c", "q", "esc":
-			return m, tea.Quit
-
-		// The "up" and "k" keys move the cursor up
 		case "up", "k":
 			if m.cursor > 0 {
 				m.cursor--
 			}
 
-		// The "down" and "j" keys move the cursor down
 		case "down", "j":
 			if m.cursor < len(m.formats)-1 {
 				m.cursor++
 			}
 
-		// The "enter" key and the spacebar (a literal space) toggle
-		// the selected state for the item that the cursor is pointing at.
 		case "enter", " ":
-			// TODO
+			return m, tea.Quit
 		}
 	}
 
-	// Return the updated model to the Bubble Tea runtime for processing.
-	// Note that we're not returning a command.
 	return m, nil
 }
 
 func (m model) View() string {
-	// The header
-	str := "sarc TUI\n\n"
+	menu := m.RenderMenu()
+	result := formats[m.formats[m.cursor]](m.text)
 
-	// Iterate over our choices
+	return lipgloss.JoinHorizontal(lipgloss.Center, menu, result)
+}
+
+func (m model) RenderMenu() string {
+	str := ""
+
 	for i, format := range m.formats {
-		// Is the cursor pointing at this choice?
-		cursor := " " // no cursor
 		if m.cursor == i {
-			cursor = ">" // cursor!
+			format = lipgloss.NewStyle().Foreground(lipgloss.Color("5")).Render(format)
 		}
 
-		// Render the row
-		str += fmt.Sprintf("%s %s\n", cursor, format)
+		str += fmt.Sprintf("%s\n", format)
 	}
 
-	str += "\n" + formats[m.formats[m.cursor]](m.text) + "\n"
-
-	// The footer
-	str += "\nPress q or ESC to quit.\n"
-
-	// Send the UI for rendering
-	return str
+	return lipgloss.NewStyle().Padding(1, 4, 0, 4).Render(str)
 }

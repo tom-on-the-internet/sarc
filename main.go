@@ -29,16 +29,23 @@ type options struct {
 func main() {
 	options := getOptions()
 	input := getInput()
+	output := ""
 
 	if options.interactive {
 		p := tea.NewProgram(initialModel(options.format, input))
-		if err := p.Start(); err != nil {
+
+		m, err := p.StartReturningModel()
+		if err != nil {
 			fmt.Printf("Alas, there's been an error: %v", err)
 			os.Exit(1)
 		}
-	}
 
-	output := getOutput(options.format, input)
+		finalModel := m.(model)
+
+		output = getOutput(finalModel.formats[finalModel.cursor], input)
+	} else {
+		output = getOutput(options.format, input)
+	}
 
 	fmt.Println(output)
 }
