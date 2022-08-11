@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -62,19 +62,19 @@ func getMode() string {
 }
 
 func getInput() string {
+	// if args, use them and ignore stdin
 	if args := flag.Args(); len(args) != 0 {
-		return args[0]
+		return strings.Join(args, " ")
 	}
 
-	// use stdin
-	scanner := bufio.NewScanner(os.Stdin)
-	strs := []string{}
-
-	for scanner.Scan() {
-		strs = append(strs, scanner.Text())
+	// no args, let's use stdin
+	bytes, err := ioutil.ReadAll(os.Stdin)
+	if err != nil {
+		fmt.Fprint(os.Stderr, err)
+		os.Exit(1)
 	}
 
-	return strings.Join(strs, "\n")
+	return string(bytes)
 }
 
 func getOutput(mode, input string) string {

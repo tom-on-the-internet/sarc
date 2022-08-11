@@ -66,3 +66,8 @@ func Swapcase(str string) string {
 
 	return string(runes)
 }
+
+// TODO
+func Smallcaps(str string) string {
+	return str
+}
