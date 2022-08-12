@@ -54,8 +54,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 	menu := m.RenderMenu()
 	result := formats[m.formats[m.cursor]](m.text)
+	result = lipgloss.NewStyle().Padding(1, 4, 0, 4).Render(result)
 
-	return lipgloss.JoinHorizontal(lipgloss.Center, menu, result)
+	return lipgloss.JoinHorizontal(lipgloss.Top, menu, result)
 }
 
 func (m model) RenderMenu() string {
@@ -69,5 +70,9 @@ func (m model) RenderMenu() string {
 		str += fmt.Sprintf("%s\n", format)
 	}
 
-	return lipgloss.NewStyle().Padding(1, 4, 0, 4).Render(str)
+	return lipgloss.NewStyle().
+		Padding(1, 4, 0, 4).
+		BorderStyle(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color("5")).
+		Render(str)
 }

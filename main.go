@@ -42,7 +42,7 @@ func main() {
 
 		finalModel := m.(model)
 
-		output = getOutput(finalModel.formats[finalModel.cursor], input)
+		output = "\n\n" + getOutput(finalModel.formats[finalModel.cursor], input)
 	} else {
 		output = getOutput(options.format, input)
 	}
