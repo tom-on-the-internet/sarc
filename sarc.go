@@ -243,6 +243,32 @@ func Ball(str string) string {
 
 func Cursive(str string) string {
 	lookup := map[rune]rune{
+		'A': '𝓐',
+		'B': '𝓑',
+		'C': '𝓒',
+		'D': '𝓓',
+		'E': '𝓔',
+		'F': '𝓕',
+		'G': '𝓖',
+		'H': '𝓗',
+		'I': '𝓘',
+		'J': '𝓙',
+		'K': '𝓚',
+		'L': '𝓛',
+		'M': '𝓜',
+		'N': '𝓝',
+		'O': '𝓞',
+		'P': '𝓟',
+		'Q': '𝓠',
+		'R': '𝓡',
+		'S': '𝓢',
+		'T': '𝓣',
+		'U': '𝓤',
+		'V': '𝓥',
+		'W': '𝓦',
+		'X': '𝓧',
+		'Y': '𝓨',
+		'Z': '𝓩',
 		'a': '𝓪',
 		'b': '𝓫',
 		'c': '𝓬',
@@ -275,7 +301,7 @@ func Cursive(str string) string {
 
 	for _, r := range str {
 		if unicode.IsLetter(r) {
-			result = append(result, lookup[unicode.ToLower(r)])
+			result = append(result, lookup[r])
 		} else {
 			result = append(result, r)
 		}
