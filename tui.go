@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -54,9 +52,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 	menu := m.RenderMenu()
 	result := formats[m.formats[m.cursor]](m.text)
-	result = lipgloss.NewStyle().Padding(1, 4, 0, 4).Render(result)
+	result = lipgloss.NewStyle().Padding(1, 2, 1, 2).Margin(1, 0, 1, 0).Render(result)
 
-	return lipgloss.JoinHorizontal(lipgloss.Top, menu, result)
+	return lipgloss.JoinHorizontal(lipgloss.Center, menu, result)
 }
 
 func (m model) RenderMenu() string {
@@ -67,11 +65,16 @@ func (m model) RenderMenu() string {
 			format = lipgloss.NewStyle().Foreground(lipgloss.Color("5")).Render(format)
 		}
 
-		str += fmt.Sprintf("%s\n", format)
+		if i != 0 {
+			str += "\n"
+		}
+
+		str += format
 	}
 
 	return lipgloss.NewStyle().
-		Padding(1, 4, 0, 4).
+		Padding(1, 2, 1, 2).
+		Margin(1, 0, 1, 0).
 		BorderStyle(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("5")).
 		Render(str)
