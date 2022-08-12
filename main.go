@@ -13,12 +13,17 @@ import (
 
 // nolint
 var formats = map[string]func(string) string{
-	"lowercase": Lowercase,
-	"nomodify":  NoModify,
-	"reverse":   Reverse,
-	"sarcastic": Sarcastic,
-	"swapcase":  Swapcase,
-	"uppercase": Uppercase,
+	"ball":       Ball,
+	"cursive":    Cursive,
+	"lowercase":  Lowercase,
+	"nomodify":   NoModify,
+	"reverse":    Reverse,
+	"sarcastic":  Sarcastic,
+	"smallcaps":  Smallcaps,
+	"stencil":    Stencil,
+	"swapcase":   Swapcase,
+	"uppercase":  Uppercase,
+	"upsidedown": UpsideDown,
 }
 
 type options struct {
@@ -29,24 +34,32 @@ type options struct {
 func main() {
 	options := getOptions()
 	input := getInput()
-	output := ""
 
 	if options.interactive {
-		p := tea.NewProgram(initialModel(options.format, input))
-
-		m, err := p.StartReturningModel()
-		if err != nil {
-			fmt.Printf("Alas, there's been an error: %v", err)
-			os.Exit(1)
-		}
-
-		finalModel := m.(model)
-
-		output = "\n\n" + getOutput(finalModel.formats[finalModel.cursor], input)
-	} else {
-		output = getOutput(options.format, input)
+		handleInteractive(options.format, input)
+		return
 	}
 
+	output := getOutput(options.format, input)
+
+	fmt.Println(output)
+}
+
+func handleInteractive(format, input string) {
+	p := tea.NewProgram(initialModel(format, input))
+
+	teaModel, err := p.StartReturningModel()
+	if err != nil {
+		fmt.Printf("Alas, there's been an error: %v", err)
+		os.Exit(1)
+	}
+
+	finalModel, ok := teaModel.(model)
+	if !ok {
+		panic("model isn't a model. this should never happen.")
+	}
+
+	output := "\n\n" + getOutput(finalModel.formats[finalModel.cursor], input)
 	fmt.Println(output)
 }
 
