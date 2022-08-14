@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestSarcastic(t *testing.T) {
 	t.Parallel()
@@ -283,6 +285,26 @@ func TestCursive(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Cursive(tt.args.str); got != tt.want {
 				t.Errorf("Cursive() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestRot13(t *testing.T) {
+	type args struct {
+		str string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Rot13(tt.args.str); got != tt.want {
+				t.Errorf("Rot13() = %v, want %v", got, tt.want)
 			}
 		})
 	}

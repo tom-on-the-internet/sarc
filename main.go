@@ -18,6 +18,7 @@ var formats = map[string]func(string) string{
 	"lowercase":  Lowercase,
 	"nomodify":   NoModify,
 	"reverse":    Reverse,
+	"rot13":      Rot13,
 	"sarcastic":  Sarcastic,
 	"smallcaps":  Smallcaps,
 	"stencil":    Stencil,
