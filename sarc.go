@@ -138,6 +138,32 @@ func UpsideDown(str string) string {
 		'x': 'x',
 		'y': 'ʎ',
 		'z': 'z',
+		'A': '∀',
+		'B': 'q',
+		'C': 'Ɔ',
+		'D': 'p',
+		'E': 'Ǝ',
+		'F': 'Ⅎ',
+		'G': 'פ',
+		'H': 'H',
+		'I': 'I',
+		'J': 'ſ',
+		'K': 'ʞ',
+		'L': '˥',
+		'M': 'W',
+		'N': 'N',
+		'O': 'O',
+		'P': 'Ԁ',
+		'Q': 'Q',
+		'R': 'ɹ',
+		'S': 'S',
+		'T': '┴',
+		'U': '∩',
+		'V': 'Λ',
+		'W': 'M',
+		'X': 'X',
+		'Y': '⅄',
+		'Z': 'Z',
 	}
 
 	result := []rune{}
@@ -146,7 +172,7 @@ func UpsideDown(str string) string {
 
 	for _, r := range str {
 		if unicode.IsLetter(r) {
-			result = append(result, lookup[unicode.ToLower(r)])
+			result = append(result, lookup[r])
 		} else {
 			result = append(result, r)
 		}
@@ -183,13 +209,39 @@ func Stencil(str string) string {
 		'y': '𝕪',
 		'x': '𝕩',
 		'z': '𝕫',
+		'A': '𝔸',
+		'B': '𝔹',
+		'C': 'ℂ',
+		'D': '𝔻',
+		'E': '𝔼',
+		'F': '𝔽',
+		'G': '𝔾',
+		'H': 'ℍ',
+		'I': '𝕀',
+		'J': '𝕁',
+		'K': '𝕂',
+		'L': '𝕃',
+		'M': '𝕄',
+		'N': 'ℕ',
+		'O': '𝕆',
+		'P': 'ℙ',
+		'Q': 'ℚ',
+		'R': 'ℝ',
+		'S': '𝕊',
+		'T': '𝕋',
+		'U': '𝕌',
+		'V': '𝕍',
+		'W': '𝕎',
+		'X': '𝕏',
+		'Y': '𝕐',
+		'Z': 'ℤ',
 	}
 
 	result := []rune{}
 
 	for _, r := range str {
 		if unicode.IsLetter(r) {
-			result = append(result, lookup[unicode.ToLower(r)])
+			result = append(result, lookup[r])
 		} else {
 			result = append(result, r)
 		}
