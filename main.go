@@ -11,7 +11,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-// nolint
+//nolint
 var formats = map[string]func(string) string{
 	"ball":       Ball,
 	"cursive":    Cursive,
@@ -43,6 +43,7 @@ func main() {
 
 	output := getOutput(options.format, input)
 
+	fmt.Println(output)
 	fmt.Println(output)
 }
 
