@@ -44,7 +44,6 @@ func main() {
 	output := getOutput(options.format, input)
 
 	fmt.Println(output)
-	fmt.Println(output)
 }
 
 func handleInteractive(format, input string) {
