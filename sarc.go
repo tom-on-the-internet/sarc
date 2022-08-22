@@ -1,3 +1,4 @@
+// This file contains the text transformers.
 package main
 
 import (
@@ -100,11 +101,18 @@ func Smallcaps(str string) string {
 	result := []rune{}
 
 	for _, r := range str {
-		if unicode.IsLetter(r) {
-			result = append(result, lookup[unicode.ToLower(r)])
-		} else {
+		if !unicode.IsLetter(r) {
 			result = append(result, r)
+			continue
 		}
+
+		match, ok := lookup[unicode.ToLower(r)]
+		if !ok {
+			result = append(result, r)
+			continue
+		}
+
+		result = append(result, match)
 	}
 
 	return string(result)
@@ -171,8 +179,9 @@ func UpsideDown(str string) string {
 	str = Reverse(str)
 
 	for _, r := range str {
-		if unicode.IsLetter(r) {
-			result = append(result, lookup[r])
+		match, ok := lookup[r]
+		if ok {
+			result = append(result, match)
 		} else {
 			result = append(result, r)
 		}
@@ -240,8 +249,9 @@ func Stencil(str string) string {
 	result := []rune{}
 
 	for _, r := range str {
-		if unicode.IsLetter(r) {
-			result = append(result, lookup[r])
+		match, ok := lookup[r]
+		if ok {
+			result = append(result, match)
 		} else {
 			result = append(result, r)
 		}
@@ -283,11 +293,18 @@ func Ball(str string) string {
 	result := []rune{}
 
 	for _, r := range str {
-		if unicode.IsLetter(r) {
-			result = append(result, lookup[unicode.ToLower(r)])
-		} else {
+		if !unicode.IsLetter(r) {
 			result = append(result, r)
+			continue
 		}
+
+		match, ok := lookup[unicode.ToLower(r)]
+		if !ok {
+			result = append(result, r)
+			continue
+		}
+
+		result = append(result, match)
 	}
 
 	return string(result)
@@ -352,8 +369,9 @@ func Cursive(str string) string {
 	result := []rune{}
 
 	for _, r := range str {
-		if unicode.IsLetter(r) {
-			result = append(result, lookup[r])
+		match, ok := lookup[r]
+		if ok {
+			result = append(result, match)
 		} else {
 			result = append(result, r)
 		}
@@ -421,8 +439,9 @@ func Rot13(str string) string {
 	result := []rune{}
 
 	for _, r := range str {
-		if unicode.IsLetter(r) {
-			result = append(result, lookup[r])
+		match, ok := lookup[r]
+		if ok {
+			result = append(result, match)
 		} else {
 			result = append(result, r)
 		}
