@@ -108,12 +108,6 @@ func getOptions() options {
 }
 
 func getInput() string {
-	// if args, use them and ignore stdin
-	if args := flag.Args(); len(args) != 0 {
-		return strings.Join(args, " ")
-	}
-
-	// no args, let's use stdin
 	bytes, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
 		fmt.Fprint(os.Stderr, err)
