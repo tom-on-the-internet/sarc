@@ -60,6 +60,11 @@ func handleInteractive(format, input string) {
 		panic("model isn't a model. this should never happen.")
 	}
 
+	if finalModel.text == "" {
+		// this means the user has hit q
+		return
+	}
+
 	output := "\n\n" + getOutput(finalModel.formats[finalModel.cursor], input)
 	fmt.Println(output)
 }

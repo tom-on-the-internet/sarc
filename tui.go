@@ -43,6 +43,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter", " ":
 			return m, tea.Quit
+
+		case "q":
+			m.text = ""
+			return m, tea.Quit
 		}
 	}
 
