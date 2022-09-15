@@ -47,6 +47,11 @@ func main() {
 }
 
 func handleInteractive(format, input string) {
+	fmt.Print("\033[s")    // Save cursor position"
+	fmt.Print("\033[?47h") // save screen
+	fmt.Print("\033[H")    // move to top of screen
+	fmt.Print("\033[?25l") // make cursor invisible
+
 	p := tea.NewProgram(initialModel(format, input))
 
 	teaModel, err := p.StartReturningModel()
@@ -62,11 +67,20 @@ func handleInteractive(format, input string) {
 
 	if finalModel.text == "" {
 		// this means the user has hit q
+
+		fmt.Print("\033[?25h") // make cursor visible
+		fmt.Print("\033[?47l") // load screen
+		fmt.Print("\033[u")    // Restore cursor position"
 		return
 	}
 
-	output := "\n\n" + getOutput(finalModel.formats[finalModel.cursor], input)
-	fmt.Println(output)
+	output := getOutput(finalModel.formats[finalModel.cursor], input)
+
+	fmt.Print("\033[?25h") // make cursor visible
+	fmt.Print("\033[?47l") // load screen
+	fmt.Print("\033[u")    // Restore cursor position"
+
+	fmt.Print(output)
 }
 
 func getOptions() options {
