@@ -2,8 +2,6 @@
 
 A text transformation CLI.
 
-<img src="https://user-images.githubusercontent.com/8356936/186296702-e99ed7d5-4f85-44a2-b02c-793a43f5511b.png" width="300"  />
-
 ## Installation
 
 ### Go
@@ -15,6 +13,10 @@ go install github.com/tom-on-the-internet/sarc@latest
 ### Nix
 
 Use the flake.nix found in the root of this repository.
+
+```bash
+nix shell github:tom-on-the-internet/sarc
+```
 
 ### Download the binary
 
@@ -52,3 +54,7 @@ swapcase      hELLO wORLD!
 uppercase     HELLO WORLD!
 upsidedown    !pʅɹoM oʅʅǝH
 ```
+
+## Video Explanation
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/V9dOyqtm3vc/0.jpg)](http://www.youtube.com/watch?v=V9dOyqtm3vc "Sarc Video")
